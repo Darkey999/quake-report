@@ -6,7 +6,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public final class QueryUtils {
     // Sample JSON response
@@ -37,10 +39,16 @@ public final class QueryUtils {
                 JSONObject f = features.getJSONObject(i);
                 JSONObject prop = f.getJSONObject("properties");
                 double mag = prop.getDouble("mag");
-                String name = prop.getString("place");
-                String email = prop.getString("time");
+                String place = prop.getString("place");
+                String time = prop.getString("time");
 
-                earthquakes.add(new Earthquake(mag, name, email));
+                //convert milliseconds to actual date
+                long timeInMilliseconds = Long.parseLong(time);
+                Date dateObject = new Date(timeInMilliseconds);
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM DD, yyyy");
+                String dateToDisplay = dateFormatter.format(dateObject);
+
+                earthquakes.add(new Earthquake(mag, place, dateToDisplay));
             }
 
         } catch (JSONException e) {
