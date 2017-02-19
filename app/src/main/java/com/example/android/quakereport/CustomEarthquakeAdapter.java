@@ -1,6 +1,8 @@
 package com.example.android.quakereport;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +12,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by Gosu on 2017-02-19.
- */
 public class CustomEarthquakeAdapter extends ArrayAdapter<Earthquake> {
-
+    int magnitudeColor;
     public CustomEarthquakeAdapter(Context context, ArrayList<Earthquake> objects) {
         super(context, 0, objects);
 
@@ -32,8 +31,19 @@ public class CustomEarthquakeAdapter extends ArrayAdapter<Earthquake> {
         TextView time = (TextView) convertView.findViewById(R.id.time);
         TextView near = (TextView) convertView.findViewById(R.id.near);
 
+        //set the proper background color on the magnitude circle.
+        GradientDrawable magnitudeCircle = (GradientDrawable) mag.getBackground();
+
+
         //setting resources
         Earthquake getQuake = getItem(position);
+
+        //get the appropriate background color based on the current earthquake magnitude
+        magnitudeColor = getMagnitudeColor(getQuake.returnMag());
+
+        //set the color on the magnitude circle
+        Log.d("hehehehe", String.valueOf(magnitudeColor));
+        magnitudeCircle.setColor(magnitudeColor);
 
         String location = getQuake.returnPlace();
         String[] split;
@@ -43,7 +53,7 @@ public class CustomEarthquakeAdapter extends ArrayAdapter<Earthquake> {
             split = location.split("of");
             offset = split[0];
             primary = split[1];
-            near.setText(String.valueOf(offset)+"of");
+            near.setText(String.valueOf(offset) + "of");
         } else {
             near.setText("Near the");
             primary = getQuake.returnPlace();
@@ -52,5 +62,44 @@ public class CustomEarthquakeAdapter extends ArrayAdapter<Earthquake> {
         date.setText(getQuake.returnDate());
         time.setText(getQuake.returnTime());
         return convertView;
+    }
+
+    private int getMagnitudeColor(double magnitude) {
+        switch ((int) magnitude) {
+            case 0:
+                magnitudeColor = ContextCompat.getColor(getContext(), R.color.magnitude1);
+                break;
+            case 1:
+                magnitudeColor = ContextCompat.getColor(getContext(), R.color.magnitude2);
+                break;
+            case 2:
+                magnitudeColor = ContextCompat.getColor(getContext(), R.color.magnitude3);
+                break;
+            case 3:
+                magnitudeColor = ContextCompat.getColor(getContext(), R.color.magnitude4);
+                break;
+            case 4:
+                magnitudeColor = ContextCompat.getColor(getContext(), R.color.magnitude5);
+                break;
+            case 5:
+                magnitudeColor = ContextCompat.getColor(getContext(), R.color.magnitude6);
+                break;
+            case 6:
+                magnitudeColor = ContextCompat.getColor(getContext(), R.color.magnitude7);
+                break;
+            case 7:
+                magnitudeColor = ContextCompat.getColor(getContext(), R.color.magnitude8);
+                break;
+            case 8:
+                magnitudeColor = ContextCompat.getColor(getContext(), R.color.magnitude9);
+                break;
+            case 9:
+                magnitudeColor = ContextCompat.getColor(getContext(), R.color.magnitude10plus);
+                break;
+            default:
+                magnitudeColor = ContextCompat.getColor(getContext(), R.color.magnitude10plus);
+                break;
+        }
+        return magnitudeColor;
     }
 }
