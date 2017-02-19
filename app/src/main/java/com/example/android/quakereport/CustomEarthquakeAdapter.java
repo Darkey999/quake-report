@@ -42,7 +42,6 @@ public class CustomEarthquakeAdapter extends ArrayAdapter<Earthquake> {
         magnitudeColor = getMagnitudeColor(getQuake.returnMag());
 
         //set the color on the magnitude circle
-        Log.d("hehehehe", String.valueOf(magnitudeColor));
         magnitudeCircle.setColor(magnitudeColor);
 
         String location = getQuake.returnPlace();
