@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- my_list TextViews -->
     <style name="myListTv">
-        <item name="android:textSize">15sp</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:textAlignment">center</item>
-    </style>
-    <!-- my_list date TextViews -->
-    <style name="myListDateTv">
         <item name="android:textSize">15sp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

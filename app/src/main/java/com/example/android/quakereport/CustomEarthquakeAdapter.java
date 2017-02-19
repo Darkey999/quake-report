@@ -30,10 +30,25 @@ public class CustomEarthquakeAdapter extends ArrayAdapter<Earthquake> {
         TextView place = (TextView) convertView.findViewById(R.id.place);
         TextView date = (TextView) convertView.findViewById(R.id.date);
         TextView time = (TextView) convertView.findViewById(R.id.time);
+        TextView near = (TextView) convertView.findViewById(R.id.near);
+
         //setting resources
         Earthquake getQuake = getItem(position);
+
+        String location = getQuake.returnPlace();
+        String[] split;
+        String offset, primary;
         mag.setText(String.valueOf(getQuake.returnMag()));
-        place.setText(getQuake.returnPlace());
+        if (location.contains("of")) {
+            split = location.split("of");
+            offset = split[0];
+            primary = split[1];
+            near.setText(String.valueOf(offset)+"of");
+        } else {
+            near.setText("Near the");
+            primary = getQuake.returnPlace();
+        }
+        place.setText(String.valueOf(primary));
         date.setText(getQuake.returnDate());
         time.setText(getQuake.returnTime());
         return convertView;
