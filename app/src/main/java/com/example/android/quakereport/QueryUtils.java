@@ -40,15 +40,16 @@ public final class QueryUtils {
                 JSONObject prop = f.getJSONObject("properties");
                 double mag = prop.getDouble("mag");
                 String place = prop.getString("place");
-                String time = prop.getString("time");
+                long time = prop.getLong("time");
 
                 //convert milliseconds to actual date
-                long timeInMilliseconds = Long.parseLong(time);
-                Date dateObject = new Date(timeInMilliseconds);
+                Date dateObject = new Date(time);
                 SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM DD, yyyy");
+                SimpleDateFormat timeFormatter = new SimpleDateFormat("h:mm a");
                 String dateToDisplay = dateFormatter.format(dateObject);
+                String timeToDisplay = timeFormatter.format(dateObject);
 
-                earthquakes.add(new Earthquake(mag, place, dateToDisplay));
+                earthquakes.add(new Earthquake(mag, place, dateToDisplay, timeToDisplay));
             }
 
         } catch (JSONException e) {

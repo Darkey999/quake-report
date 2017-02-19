@@ -16,4 +16,12 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:textAlignment">center</item>
     </style>
+
+    <!-- my_list date TextViews -->
+    <style name="myListDateTv">
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAlignment">center</item>
+    </style>
 </resources>
