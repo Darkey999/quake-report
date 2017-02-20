@@ -5,14 +5,15 @@ package com.example.android.quakereport;
  */
 public class Earthquake {
     private double mag;
-    private String place, date, time;
+    private String place, date, time, url;
 
     //constructor getting magnitude, place and date of the earthquake
-    public Earthquake(double mag, String place, String date, String time) {
+    public Earthquake(double mag, String place, String date, String time, String url) {
         this.mag = mag;
         this.place = place;
         this.date = date;
         this.time = time;
+        this.url = url;
     }
 
     public double returnMag() {
@@ -25,6 +26,10 @@ public class Earthquake {
 
     public String returnTime() {
         return time;
+    }
+
+    public String returnUrl() {
+        return url;
     }
 
     public String returnDate() {

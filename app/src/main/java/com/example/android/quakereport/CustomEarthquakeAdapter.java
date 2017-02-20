@@ -1,30 +1,35 @@
 package com.example.android.quakereport;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class CustomEarthquakeAdapter extends ArrayAdapter<Earthquake> {
     int magnitudeColor;
+    Context context;
     public CustomEarthquakeAdapter(Context context, ArrayList<Earthquake> objects) {
         super(context, 0, objects);
-
+        this.context=context;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, final ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.my_list, null);
 
         //finding elements of the layout
+        LinearLayout listMain = (LinearLayout) convertView.findViewById(R.id.listMain);
         TextView mag = (TextView) convertView.findViewById(R.id.mag);
         TextView place = (TextView) convertView.findViewById(R.id.place);
         TextView date = (TextView) convertView.findViewById(R.id.date);
@@ -36,7 +41,7 @@ public class CustomEarthquakeAdapter extends ArrayAdapter<Earthquake> {
 
 
         //setting resources
-        Earthquake getQuake = getItem(position);
+        final Earthquake getQuake = getItem(position);
 
         //get the appropriate background color based on the current earthquake magnitude
         magnitudeColor = getMagnitudeColor(getQuake.returnMag());
@@ -60,6 +65,16 @@ public class CustomEarthquakeAdapter extends ArrayAdapter<Earthquake> {
         place.setText(String.valueOf(primary));
         date.setText(getQuake.returnDate());
         time.setText(getQuake.returnTime());
+
+        listMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = getQuake.returnUrl();
+                Intent openUrl = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                context.startActivity(openUrl);
+            }
+        });
+
         return convertView;
     }
 
