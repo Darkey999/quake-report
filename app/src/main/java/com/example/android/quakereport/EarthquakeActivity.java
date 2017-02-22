@@ -15,32 +15,61 @@
  */
 package com.example.android.quakereport;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
-    public static final String LOG_TAG = EarthquakeActivity.class.getName();
+    final String CONNECT_URL = "http://earthquake.usgs.gov/fdsnws/event/1/" +
+            "query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
+    CustomEarthquakeAdapter adapter;
+    ArrayList<Earthquake> earthquakes;
+    ListView earthquakeListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        // Create a fake list of earthquake locations.
-        ArrayList<Earthquake> earthquakes = QueryUtils.extractEarthquakes();
-        ListView earthquakeListView = (ListView) findViewById(R.id.list);
+        earthquakeListView = (ListView) findViewById(R.id.list);
 
-        //create and set the adapter
-        CustomEarthquakeAdapter adapter = new CustomEarthquakeAdapter(
-                this, earthquakes);
+        // Execute new EarthquakeAsyncTask
+        EarthquakeAsyncTask earthQuakeResult = new EarthquakeAsyncTask();
+        earthQuakeResult.execute(CONNECT_URL);
+    }
 
-        assert earthquakeListView != null;
-        earthquakeListView.setAdapter(adapter);
+    // Class created to handle network operations in the background thread
+    private class EarthquakeAsyncTask extends AsyncTask<String, Void, ArrayList<Earthquake>> {
+
+        @Override
+        protected ArrayList<Earthquake> doInBackground(String... urls) {
+            // Creating URL
+            URL connection = QueryUtils.createUrl(urls[0]);
+            String jsonResponse;
+            try {
+                // Establishing connection,
+                jsonResponse = QueryUtils.makeHttpRequest(connection);
+                earthquakes = QueryUtils.extractEarthquakes(jsonResponse);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Earthquake> earthquakesResult) {
+            // Setting adapter
+            adapter = new CustomEarthquakeAdapter(EarthquakeActivity.this, earthquakes);
+            earthquakeListView.setAdapter(adapter);
+        }
     }
 }
