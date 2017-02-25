@@ -90,7 +90,7 @@ public final class QueryUtils {
 
                 //convert milliseconds to actual date
                 Date dateObject = new Date(time);
-                SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM DD, yyyy");
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM dd, yyyy");
                 SimpleDateFormat timeFormatter = new SimpleDateFormat("h:mm a");
                 String dateToDisplay = dateFormatter.format(dateObject);
                 String timeToDisplay = timeFormatter.format(dateObject);
